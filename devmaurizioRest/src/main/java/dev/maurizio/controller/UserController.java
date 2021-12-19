@@ -5,11 +5,9 @@ import dev.maurizio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,5 +34,12 @@ public class UserController {
 
         return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> add(@Valid @RequestBody User user) {
+        userService.add(user);
+
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 }

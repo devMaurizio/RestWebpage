@@ -40,4 +40,10 @@ public class UserServiceImp implements UserService {
 
         return userList.stream().filter(user -> user.getId() == id).findFirst();
     }
+
+    @Override
+    public void add(User user) {
+        user.setId(COUNTER++);
+        userList.add(user);
+    }
 }
