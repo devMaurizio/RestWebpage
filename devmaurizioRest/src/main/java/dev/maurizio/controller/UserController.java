@@ -27,10 +27,7 @@ public class UserController {
     public User findById(@PathVariable long id) {
         Optional<User> userOptional = userService.findById(id);
 
-        if (userOptional.isPresent()){
-            return userOptional.get();
-        }
+        return userOptional.orElse(null);
 
-        return null;
     }
 }
