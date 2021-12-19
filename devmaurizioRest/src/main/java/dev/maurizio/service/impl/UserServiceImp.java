@@ -5,6 +5,7 @@ import dev.maurizio.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,7 +34,7 @@ public class UserServiceImp implements UserService {
     @Override
     public List<User> findAll() {
 
-        return userList;
+        return userList.stream().sorted(Comparator.comparing(User::getId)).collect(Collectors.toList());
     }
 
     @Override
@@ -46,6 +47,58 @@ public class UserServiceImp implements UserService {
     public void add(User user) {
         user.setId(COUNTER++);
         userList.add(user);
+    }
+
+    @Override
+    public Optional<User> update(User user) {
+        Optional<User> userOptional = userList.stream().filter(u -> user.getId() == u.getId()).findFirst();
+
+        if (userOptional.isPresent()){
+            User existingUser = userOptional.get();
+
+            if (user.getFirstname() != null) {
+                existingUser.setFirstname(user.getFirstname());
+            }
+
+            if (user.getLastname() != null) {
+                existingUser.setLastname(user.getLastname());
+            }
+
+            if (user.getAge() != null) {
+                existingUser.setAge(user.getAge());
+            }
+
+            if (user.getPostcode() != null) {
+                existingUser.setPostcode(user.getPostcode());
+            }
+
+            if (user.getStreet() != null) {
+                existingUser.setStreet(user.getStreet());
+            }
+
+            if (user.getCity() != null) {
+                existingUser.setCity(user.getCity());
+            }
+
+            if (user.getCountry() != null) {
+                existingUser.setCountry(user.getCountry());
+            }
+
+            if (user.getCompany() != null) {
+                existingUser.setCompany(user.getCompany());
+            }
+
+            userList = userList
+                    .stream()
+                    .filter(u -> u.getId() != existingUser.getId())
+                    .collect(Collectors.toList());
+
+            userList.add(existingUser);
+
+            return Optional.of(existingUser);
+        }
+
+        return Optional.empty();
     }
 
     @Override

@@ -53,4 +53,15 @@ public class UserController {
 
         return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestBody User user) {
+        Optional<User> userOptional = userService.update(user);
+
+        if (userOptional.isPresent()) {
+            return new ResponseEntity<User>(userOptional.get(), HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+    }
 }
