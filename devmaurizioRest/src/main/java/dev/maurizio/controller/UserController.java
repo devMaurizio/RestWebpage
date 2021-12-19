@@ -4,10 +4,12 @@ import dev.maurizio.model.User;
 import dev.maurizio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,5 +21,16 @@ public class UserController {
     @GetMapping
     public List<User> findAll(){
         return userService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public User findById(@PathVariable long id) {
+        Optional<User> userOptional = userService.findById(id);
+
+        if (userOptional.isPresent()){
+            return userOptional.get();
+        }
+
+        return null;
     }
 }

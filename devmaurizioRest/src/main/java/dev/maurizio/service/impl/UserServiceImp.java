@@ -6,13 +6,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImp implements UserService {
 
     public static List<User> userList = new ArrayList<>();
 
-    private static Integer COUNTER = 1;
+    private static long COUNTER = 1;
 
     static {
         User user = new User(COUNTER++, "Test1", "Werf", "35", "1234AB", "secretStreet", "dummyCity", "Netherlands", "Secret");
@@ -32,5 +33,11 @@ public class UserServiceImp implements UserService {
     public List<User> findAll() {
 
         return userList;
+    }
+
+    @Override
+    public Optional<User> findById(long id) {
+
+        return userList.stream().filter(user -> user.getId() == id).findFirst();
     }
 }
